@@ -1,6 +1,7 @@
 import inspect
 
 from scrapy import Request
+from scrapy_selenium import SeleniumRequest
 
 
 def extract_scrapy_request_args(dictionary, raise_error=False):
@@ -12,12 +13,14 @@ def extract_scrapy_request_args(dictionary, raise_error=False):
             arguments.
     """
     result = dictionary.copy()
-    args = inspect.getfullargspec(Request.__init__).args
+    request_args = inspect.getfullargspec(Request.__init__).args
+    selenium_request_args = inspect.getfullargspec(SeleniumRequest.__init__).args
+    all_valid_args = request_args + selenium_request_args
     for key in dictionary.keys():
-        if key not in args:
+        if key not in all_valid_args:
             result.pop(key)
             if raise_error:
-                msg = u"{!r} is not a valid argument for scrapy.Request.__init__"
+                msg = u"{!r} is not a valid argument for scrapy.SeleniumRequest.__init__"
                 raise ValueError(msg.format(key))
     return result
 

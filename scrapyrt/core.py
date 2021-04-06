@@ -7,7 +7,6 @@ import os
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner, Crawler
 from scrapy.exceptions import DontCloseSpider
-from scrapy.http import Request
 from twisted.web.error import Error
 from twisted.internet import defer
 
@@ -17,6 +16,7 @@ from .conf.spider_settings import get_scrapyrt_settings, get_project_settings
 from .decorators import deprecated
 from .log import setup_spider_logging
 
+from scrapy_selenium import SeleniumRequest
 
 class ScrapyrtCrawler(Crawler):
     """Main and only difference from base class -
@@ -238,9 +238,9 @@ class CrawlManager(object):
     def create_spider_request(self, kwargs):
         url = kwargs.pop('url')
         try:
-            req = Request(url, **kwargs)
+            req = SeleniumRequest(url=url, **kwargs)
         except (TypeError, ValueError) as e:
-            msg = "Error while creating Scrapy Request, {}"
+            msg = "Error while creating Scrapy SeleniumRequest, {}"
             message = msg.format(str(e))
             raise Error('400', message=message)
 

@@ -3,6 +3,7 @@
 /build/
 /dist/
 /*.egg-info/
+.scraper-env/
 
 # twisted
 dropin.cache
@@ -24,6 +25,7 @@ testing_scripts*
 
 # IDE
 /.idea/
+.vscode/
 
 # tests
 .coverage
